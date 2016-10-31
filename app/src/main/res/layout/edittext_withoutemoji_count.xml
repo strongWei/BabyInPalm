@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/multi_text"
+        android:layout_alignParentTop="true"
+        android:inputType="textMultiLine|text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minLines="5"
+        android:maxLines="10"
+        android:background="@android:color/transparent"
+        android:gravity="left|top"
+        android:maxLength="200"
+        />
+
+    <TextView
+        android:id="@+id/showText"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/multi_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0/200"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:textColor="@color/blue"
+        />
+</RelativeLayout>

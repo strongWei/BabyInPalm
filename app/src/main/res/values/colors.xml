@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="light_green">#ff007c84</color>
+    <color name="light_green_160">#a0007c84</color>
+    <color name="deep_green">#ff004c52</color>
+    <color name="deep_green_200">#c8004c52</color>
+    <color name="white">#ffffffff</color>
+    <color name="white_200">#c8ffffff</color>
+    <color name="deep_gray">#ffc2c3c5</color>
+    <color name="light_gray">#ffeeeef0</color>
+    <color name="light_gray_200">#c8eeeef0</color>
+    <color name="orange">#ffff7900</color>
+    <color name="light_gray_font">#ffc9c9cb</color>
+    <color name="blue">#02a3dc</color>
+    <color name="light_blue">#46c3ed</color>
+    <color name="light_blue_200">#c846c3ed</color>
+    <color name="blue_200">#c802a3dc</color>
+    <color name="gray_text">#b8b9b8</color>
+    <color name="green_text">#24b22e</color>
+    <color name="black_200">#c8000000</color>
+    <color name="black_40">#64000000</color>
+    <color name="deep_blue">#65c4fc</color>
+    <color name="red">#ff0000</color>
+    <color name="weixin_gray">#d1d1d1</color>
+    <color name="weixin_black">#343434</color>
+    <color name="weixin_text_gray">#aaaaaa</color>
+</resources>

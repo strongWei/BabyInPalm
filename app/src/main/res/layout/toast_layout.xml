@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/notice_shape">
+
+    <TextView
+        android:id="@+id/warn_text"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_above="@id/copyright_text"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="用户名出错"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/notice_shape"
+        android:textColor="@color/light_blue"
+        />
+
+</LinearLayout>

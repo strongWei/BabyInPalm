@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_200"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_title"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:textColor="@color/blue"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+        <EditText
+            android:id="@+id/login_username"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/login_edittext_selector"
+            android:layout_marginBottom="5dp"
+            android:inputType="phone"
+            android:hint="@string/login_username_hint"
+            android:padding="10dp"/>
+        <EditText
+            android:id="@+id/login_password"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:inputType="textPassword"
+            android:hint="@string/login_password_hint"
+            android:background="@drawable/login_edittext_selector"
+            android:padding="10dp"
+            />
+        <Button
+            android:id="@+id/login_btn"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/login_button_text"
+            android:textColor="@drawable/login_button_text_selector"
+            android:textSize="20sp"
+            android:textScaleX="1.3"
+            android:background="@drawable/login_button_selector"
+            android:clickable="true"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            >
+            <TextView
+                android:id="@+id/forget_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/forget_link_text"
+                android:layout_alignParentRight="true"
+                android:textStyle="italic"
+                android:textColor="@drawable/login_link_text_selector"
+                android:textSize="16dp"
+                android:clickable="true"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/copyright_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="COPYRIGHT 2016... "
+        android:gravity="center"
+        android:textColor="#05a0d2"
+        android:textSize="14sp"
+        android:textScaleX="1.2"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentBottom="true"/>
+
+    <!--
+    <TextView
+        android:id="@+id/warn_text"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_above="@id/copyright_text"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="用户名出错"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/warn_shape"
+        android:textColor="@color/light_blue"
+        />
+      -->
+
+</RelativeLayout>

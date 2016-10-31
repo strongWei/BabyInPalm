@@ -1,0 +1,98 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.hongsi.babyinpalm"
+    android:versionCode="1"
+    android:versionName="1.0.0.0">
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+
+    <application android:name=".Utils.Component.CustomApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/app_icon"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        >
+
+        <!-- screen activity -->
+        <activity android:name=".Controller.activity.ActivityScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- login activity -->
+        <activity android:name=".Controller.activity.ActivityLogin">
+        </activity>
+
+        <!-- main activity -->
+        <activity android:name=".Controller.activity.ActivityMain">
+        </activity>
+
+        <!-- change user name activity -->
+        <activity android:name=".Controller.activity.ActivitySetUserInfo">
+        </activity>
+
+        <!-- show person image activity -->
+        <activity android:name=".Controller.activity.ActivityPersonImage"
+            android:launchMode="singleTop">
+
+        </activity>
+
+        <!-- clip image activity -->
+        <activity android:name=".dll.clipImage.ClipImageActivity"
+            android:launchMode="singleTop">
+        </activity>
+
+        <!-- single select image activity -->
+        <activity android:name=".dll.SelectImage.imageloader.SingleSelectImageActivity"
+            android:launchMode="singleTop">
+        </activity>
+
+        <!-- child info activyty -->
+        <activity android:name=".Controller.activity.ChildInfoActivity"></activity>
+
+        <!-- show child info activyty -->
+        <activity android:name=".Controller.activity.ShowChildInfoActivity"></activity>
+
+        <!-- set child info activity -->
+        <activity android:name=".Controller.activity.SetChildInfoActivity">
+
+        </activity>
+
+        <!-- data list activity -->
+        <activity android:name=".Controller.activity.ActivityDataList">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"></action>-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+
+        <!-- add data activity -->
+        <activity android:name=".Controller.activity.ActivityAddData"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"></action>-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <!-- multi select image activity -->
+        <activity android:name=".dll.SelectImage.imageloader.MultiSelectImageActivity"></activity>
+
+        <!-- image list activity -->
+        <activity android:name=".dll.showImage.ActivityImageList"></activity>
+
+        <!--record list activity -->
+        <activity android:name=".Controller.activity.ActivityShowRecord">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN"></action>-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+    </application>
+
+</manifest>

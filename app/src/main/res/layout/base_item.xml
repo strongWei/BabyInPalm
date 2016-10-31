@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_alignParentLeft="true"
+        android:id="@+id/user_image"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@mipmap/app_icon"
+        android:layout_alignParentTop="true"
+      />
+
+
+    <TextView
+        android:id="@+id/user_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/user_image">
+
+        <TextView
+            android:id="@+id/base_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+        <TextView
+            android:layout_marginTop="2dp"
+            android:textColor="@color/blue"
+            android:textSize="15sp"
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="小学生"/>
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:lineSpacingExtra="2dp"
+            android:textColor="@color/weixin_black"
+            />
+
+        <com.hongsi.babyinpalm.dll.showImage.CustomGridView
+            android:id="@+id/imageGridView"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:stretchMode="columnWidth"
+            android:numColumns="3"
+            android:horizontalSpacing="5dp"
+            android:verticalSpacing="5dp"
+            android:visibility="visible"
+            >
+        </com.hongsi.babyinpalm.dll.showImage.CustomGridView>
+
+        <TextView
+            android:layout_alignParentRight="true"
+            android:id="@+id/time"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/weixin_text_gray"
+            android:text="10天前"/>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

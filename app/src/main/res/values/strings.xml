@@ -1,0 +1,119 @@
+<resources>
+    <string name="app_name">掌上宝宝</string>
+
+    <!-- quit app -->
+    <string name="backpress_quit_text">再按一次退出程序</string>
+
+    <!-- login page -->
+    <string name="software_update_text">已检查到更新，是否进行更新？</string>
+    <string name="storage_error">存储异常</string>
+    <string name="software_update_fail">更新失败：</string>
+
+    <string name="login_title">登陆</string>
+    <string name="login_username_hint">手机号码</string>
+    <string name="login_password_hint">密码</string>
+    <string name="login_button_text">登陆</string>
+    <string name="forget_link_text">忘记密码?</string>
+    <string name="register_link_text">没有帐号?</string>
+    <string name="logining_title">登陆中</string>
+
+    <string name="login_username_empty">手机号为空！</string>
+    <string name="login_password_empty">密码为空！</string>
+    <string name="login_username_invalid">手机号非法！</string>
+    <string name="login_password_less_8">密码小于8个字符!</string>
+    <string name="login_error">手机号或密码出错！</string>
+    <string name="data_error">数据异常！</string>
+    <string name="server_error">服务器异常，请联系管理员！</string>
+    <string name="net_error">网络异常！</string>
+    <string name="timeout_error">连接超时！</string>
+    <string name="other_error">未知错误！</string>
+    <string name="user_exception">用户异常！</string>
+    <string name="login_fail">登陆失败：</string>
+
+    <!-- registe page -->
+    <string name="register_title">注册</string>
+    <string name="register_username_hint">用户昵称（必填）</string>
+    <string name="register_password_hint">密码（必填）</string>
+    <string name="register_repeat_password_hint">重复密码（必填）</string>
+    <string name="register_phone_hint">手机号（必填）</string>
+    <string name="register_button_text">注册</string>
+    <string name="register_cancel_button_text">取消</string>
+
+
+    <!--home page-->
+    <string name="home_text">家园</string>
+    <string name="set_text">设置</string>
+    <string name="talk_text">聊天</string>
+    <string name="stu_record">宝宝考勤</string>
+    <string name="notice">公告栏</string>
+    <string name="eat">日常饮食</string>
+    <string name="class_record">课程安排</string>
+    <string name="baby_dynamic">宝宝动态</string>
+    <string name="tea_record">教师考勤</string>
+
+    <!--set page-->
+    <string name="log_outing">注销中</string>
+    <string name="waiting">请稍候</string>
+    <string name="child_info">孩子资料</string>
+    <string name="logout">注销</string>
+    <string name="changeUserName">修改用户昵称</string>
+
+    <!--usual header-->
+    <string name="modify">修改</string>
+    <string name="back">返回</string>
+
+    <!--child info-->
+    <string name="name">姓名：</string>
+    <string name="sex">性别：</string>
+    <string name="start">入学日期：</string>
+    <string name="grade">班级：</string>
+    <string name="birth">生日：</string>
+    <string name="cards">卡号：</string>
+    <string name="image">头像：</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
+    <string name="dateselect">选择</string>
+    <string name="message">资料</string>
+    <string name="date_error">日期出错！</string>
+    <string name="image_error">图片处理异常！</string>
+    <string name="name_empty">姓名不能为空！</string>
+    <string name="stuid_invalid">该学生已经被删除！</string>
+    <string name="pic_invalie">图片尺寸过大！</string>
+    <string name="stu_name_more_40">学生姓名不能超过40个字！</string>
+    <string name="birth_after_start">出生日期不能比入学日期大！</string>
+    <string name="start_invalid">入学日期不合法!</string>
+    <string name="modify_child_info">修改信息</string>
+
+
+    <!--user info-->
+    <string name="user_name"> 用户昵称</string>
+    <string name="user_name_empty"> 用户昵称不能为空！</string>
+    <string name="user_name_more_40">用户昵称不能超过40个字！</string>
+    <string name="modify_complete">修改成功</string>
+    <string name="account_exception">帐号异常，请重新登陆</string>
+
+    <!--clip activity-->
+    <string name="complete">完成</string>
+    <string name="file_no_exists">文件不存在！</string>
+    <string name="clip_image">裁剪图片</string>
+
+    <!-- user image -->
+    <string name="uploading">正在上传中</string>
+    <string name="fileName_empty">未指定文件名！</string>
+    <string name="fileByte_empty">未发送图片！</string>
+    <string name="saveImage_fail">图片数据异常！</string>
+    <string name="upload_success">上传图片成功!</string>
+    <string name="imaging">图片处理中</string>
+
+
+
+    <!-- 获取数据 通用 activity-->
+    <string name="time_no_set">未设置时间</string>
+
+    <!-- 添加数据 通用 activity -->
+    <string name="add_notice">添加公告栏</string>
+
+    <!-- 选择图片 -->
+    <string name="select_image">选择图片</string>
+
+</resources>

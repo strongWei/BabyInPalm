@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="45dp" android:background="@color/blue"
+    >
+
+    <TextView
+        android:id="@+id/page_title"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="孩子资料"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+       />
+
+    <ImageView
+        android:id="@+id/edit_u"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/edit"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/edit_2_u"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:textColor="@color/white"
+        android:text="修改"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:textSize="16sp"
+        android:gravity="center"
+        />
+
+
+    <ImageView
+        android:id="@+id/back_u"
+        android:layout_marginLeft="5dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:layout_alignTop="@+id/page_title"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@mipmap/back"
+        android:padding="5dp"/>
+
+
+</RelativeLayout>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="horizontal"
+            android:background="@color/blue"
+            android:visibility="gone"
+            >
+
+        </View>
+
+
+        <FrameLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+        </FrameLayout>
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/light_blue" />
+
+        <TableLayout
+            android:id="@+id/menu_layout"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:orientation="horizontal"
+            android:background="@color/white_200"
+            android:gravity="center"
+            android:stretchColumns="0,1,2"
+            >
+
+            <TableRow android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp">
+                <RelativeLayout
+                    android:id="@+id/talk_page"
+                    android:layout_width="0dp"
+                    android:layout_height="55dp"
+                    android:layout_weight="1"
+                    >
+                    <ImageView
+                        android:id="@+id/talk_image"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@mipmap/talk_gray"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        />
+                    <TextView
+                        android:id="@+id/talk_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginBottom="2dp"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:text="@string/talk_text"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentBottom="true"
+                        
+                        android:textColor="@color/gray_text"/>
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/home_page"
+                    android:layout_width="0dp"
+                    android:layout_height="55dp"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:id="@+id/home_image"
+                        android:layout_marginTop="2dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:src="@mipmap/home_green"
+                        
+                       />
+                    <TextView
+                        android:id="@+id/home_text"
+                        android:layout_width="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:layout_height="20dp"
+                        android:text="@string/home_text"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/green_text"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentBottom="true"
+                        />
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/set_page"
+                    android:layout_width="0dp"
+                    android:layout_height="55dp"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:id="@+id/set_image"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:src="@mipmap/set_gray"
+                        />
+                    <TextView
+                        android:id="@+id/set_text"
+                        android:layout_width="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:layout_height="20dp"
+                        android:text="@string/set_text"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/gray_text"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentBottom="true"
+                        />
+
+                </RelativeLayout>
+            </TableRow>
+
+        </TableLayout>
+
+    </LinearLayout>
+
+
+
+    <ImageView
+        android:id="@+id/currentMainPage"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/circle_image"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8.5dp"
+        android:scaleType="centerInside"
+        android:src="@mipmap/home_green"
+        android:padding="10dp"
+        android:visibility="gone"
+        />
+
+
+</RelativeLayout>
