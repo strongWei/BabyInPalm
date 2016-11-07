@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface TransImageDataListener {
     public void setImageDataToActivityImageList(List<ImageData> datas,int position);
+
+    public void deleteItem(int position);
 }

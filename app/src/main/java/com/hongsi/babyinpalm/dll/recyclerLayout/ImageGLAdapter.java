@@ -2,6 +2,8 @@ package com.hongsi.babyinpalm.dll.recyclerLayout;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import com.hongsi.babyinpalm.Utils.ImageResUtils;
 import com.hongsi.babyinpalm.dll.showImage.ImageData;
 
 import java.io.FileNotFoundException;
+import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.List;
 
@@ -165,8 +168,12 @@ public class ImageGLAdapter extends BaseAdapter{
             viewHolder.mask.setVisibility(View.GONE);
         }else {
 
+            //new LoadImageAsync(viewHolder.imageView).execute(url);
+            viewHolder.mask.setVisibility(View.VISIBLE);
+
+
             try {
-                viewHolder.imageView.setImageBitmap(ImageResUtils.rotateBitmapByDegree(ImageResUtils.getImageByUrl(url),
+                viewHolder.imageView.setImageBitmap(ImageResUtils.rotateBitmapByDegree(ImageResUtils.getImageByUrl(url,200,150),
                         ImageResUtils.getBitmapDegree(url)));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -178,4 +185,43 @@ public class ImageGLAdapter extends BaseAdapter{
     }
 
 
+    private class LoadImageAsync extends AsyncTask<String,Void,Bitmap>{
+
+        private WeakReference<ImageView> weakReference;
+
+        public LoadImageAsync(ImageView imageView){
+            weakReference = new WeakReference<ImageView>(imageView);
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            String url = params[0];
+
+            Bitmap bitmap = null;
+            try {
+                bitmap = ImageResUtils.rotateBitmapByDegree(ImageResUtils.getImageByUrl(url,200,150),
+                        ImageResUtils.getBitmapDegree(url));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+
+            if(isCancelled()){
+                bitmap = null;
+            }
+
+            if(weakReference != null) {
+                weakReference.get().setImageBitmap(bitmap);
+
+                weakReference.clear();
+                weakReference = null;
+            }
+        }
+    }
 }

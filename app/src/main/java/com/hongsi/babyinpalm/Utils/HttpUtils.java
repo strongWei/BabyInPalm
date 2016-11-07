@@ -22,7 +22,7 @@ import java.net.UnknownHostException;
 public class HttpUtils {
 
     private static final String TAG = "HttpUtils";
-    public static final String BASE_URL = "http://192.168.1.249:8080/YunSchool";
+    public static final String BASE_URL = "http://120.76.124.221:8080/YunSchool";
 
     //用于get请求（发送字符串与返回字符串的接口）
     public static String get(String url) throws NetworkErrorException,OtherIOException{
@@ -40,8 +40,8 @@ public class HttpUtils {
             conn.setRequestProperty("Connection", "Keep-Alive");
 
             conn.setRequestMethod("GET");
-            conn.setConnectTimeout(10000);
-            conn.setReadTimeout(10000);
+            conn.setConnectTimeout(30000);
+            conn.setReadTimeout(30000);
 
             conn.connect();
 

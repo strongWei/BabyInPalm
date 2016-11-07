@@ -195,7 +195,7 @@
                 />
             <ImageView
                 android:id="@+id/get_stu_pic"
-                android:src="@mipmap/app_icon"
+                android:src="@mipmap/head"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginLeft="10dp"

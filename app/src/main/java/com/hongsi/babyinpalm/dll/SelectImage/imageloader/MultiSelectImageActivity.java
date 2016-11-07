@@ -234,7 +234,16 @@ public class MultiSelectImageActivity extends BaseActivity implements OnImageDir
 					totalCount += picSize;
 
 					imageFloder.setCount(picSize);
-					mImageFloders.add(imageFloder);
+
+					if(dirPath.endsWith("/Camera")){
+						mImageFloders.add(0,imageFloder);
+					}else if(mImageFloders.size() >=1 && dirPath.endsWith("/BabyInPalm")){
+						mImageFloders.add(1,imageFloder);
+					}else if(mImageFloders.size() == 0 && dirPath.endsWith("/BabyInPalm")){
+						mImageFloders.add(0,imageFloder);
+					}else{
+						mImageFloders.add(imageFloder);
+					}
 
 					if (picSize > mPicsSize)
 					{

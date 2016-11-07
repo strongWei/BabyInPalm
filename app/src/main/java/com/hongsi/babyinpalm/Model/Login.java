@@ -89,6 +89,7 @@ public class Login {
                 user.setName(dataObj.getString("name"));
                 user.setUrl(dataObj.getString("url"));
                 user.setUrl_scale(dataObj.getString("url_scale"));
+                user.setId(dataObj.getString("id"));
 
                 saveUser();
             }
@@ -112,11 +113,22 @@ public class Login {
             user.setUrl(cursor.getString(cursor.getColumnIndex("url")));
             user.setUrl_scale(cursor.getString(cursor.getColumnIndex("url_scale")));
             user.setPassword(decodePassword(user.getName(),cursor.getString(cursor.getColumnIndex("password"))));
-
+            user.setId(cursor.getString(cursor.getColumnIndex("id")));
         }
 
         db.close();
 
+    }
+
+    public static void clearUser(){
+        user.setId("");
+        user.setName("");
+        user.setPassword("");
+        user.setPhone("");
+        user.setRole("");
+        user.setUrl("");
+        user.setEncodePassword("");
+        user.setUrl_scale("");
     }
 
     /** 个人信息保存到硬盘中中*/

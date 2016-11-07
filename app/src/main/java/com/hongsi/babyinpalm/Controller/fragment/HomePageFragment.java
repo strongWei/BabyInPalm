@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.hongsi.babyinpalm.Controller.activity.ActivityDataList;
+import com.hongsi.babyinpalm.Controller.activity.ActivityShowRecord;
 import com.hongsi.babyinpalm.R;
 import com.hongsi.babyinpalm.Utils.Component.CustomApplication;
 import com.hongsi.babyinpalm.Utils.Component.CustomPageAdapter;
@@ -55,6 +56,16 @@ public class HomePageFragment extends Fragment implements ViewPager.OnPageChange
 
     private SquareLayout noticeBtn = null;
 
+    private SquareLayout eatBtn = null;
+
+    private SquareLayout classRecordBtn = null;
+
+    private SquareLayout babyDynamicBtn = null;
+
+    private SquareLayout babyRecordBtn = null;
+
+    private SquareLayout teaRecordBtn = null;
+
     public HomePageFragment() {
         super();
     }
@@ -92,6 +103,22 @@ public class HomePageFragment extends Fragment implements ViewPager.OnPageChange
 
         noticeBtn = (SquareLayout) layoutView.findViewById(R.id.notice_btn);
         noticeBtn.setOnClickListener(this);
+
+        babyDynamicBtn = (SquareLayout) layoutView.findViewById(R.id.baby_dynamic_btn);
+        babyDynamicBtn.setOnClickListener(this);
+
+        eatBtn = (SquareLayout) layoutView.findViewById(R.id.eat_btn);
+        eatBtn.setOnClickListener(this);
+
+        teaRecordBtn = (SquareLayout) layoutView.findViewById(R.id.tea_record_btn);
+        teaRecordBtn.setOnClickListener(this);
+
+        babyRecordBtn = (SquareLayout) layoutView.findViewById(R.id.stu_record_btn);
+        babyRecordBtn.setOnClickListener(this);
+
+        classRecordBtn = (SquareLayout) layoutView.findViewById(R.id.class_record_btn);
+        classRecordBtn.setOnClickListener(this);
+
 
         initImageView();
 
@@ -206,6 +233,43 @@ public class HomePageFragment extends Fragment implements ViewPager.OnPageChange
             case R.id.notice_btn:{
                 //转到公告栏
                 Intent intent = new Intent(getActivity(), ActivityDataList.class);
+                intent.putExtra("type",0);
+                startActivity(intent);
+            }
+            break;
+
+            case R.id.baby_dynamic_btn:{
+                Intent intent = new Intent(getActivity(), ActivityDataList.class);
+                intent.putExtra("type",3);
+                startActivity(intent);
+            }
+            break;
+
+            case R.id.eat_btn:{
+                Intent intent = new Intent(getActivity(), ActivityDataList.class);
+                intent.putExtra("type",1);
+                startActivity(intent);
+            }
+            break;
+
+            case R.id.class_record_btn:{
+                Intent intent = new Intent(getActivity(), ActivityDataList.class);
+                intent.putExtra("type",2);
+                startActivity(intent);
+            }
+            break;
+
+            case R.id.stu_record_btn:{
+                //TODO:
+                Intent intent = new Intent(getActivity(), ActivityShowRecord.class);
+                intent.putExtra("type",0);
+                startActivity(intent);
+            }
+            break;
+
+            case R.id.tea_record_btn:{
+                //TODO:
+                Intent intent = new Intent(getActivity(), ActivityShowRecord.class);
                 intent.putExtra("type",0);
                 startActivity(intent);
             }

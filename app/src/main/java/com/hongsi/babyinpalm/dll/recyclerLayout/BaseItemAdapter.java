@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.hongsi.babyinpalm.Model.Login;
 import com.hongsi.babyinpalm.R;
 import com.hongsi.babyinpalm.Utils.Component.CustomApplication;
 import com.hongsi.babyinpalm.dll.showImage.ImageData;
@@ -60,14 +61,14 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
      * @param position
      */
     @Override
-    public void onBindViewHolder(final BaseViewHolder holder, int position) {
+    public void onBindViewHolder(final BaseViewHolder holder, final int position) {
         //获取数据
-        BaseData baseData = dataList.get(position);
+        final BaseData baseData = dataList.get(position);
 
         //发送人信息
         holder.userIdView.setText(baseData.getUser().getId());
         holder.userNameView.setText(baseData.getUser().getName());
-
+        holder.roleView.setText(baseData.getUser().getRole().substring(0,1));
 
         String url_scale = baseData.getUser().getUrl_scale();
         if(url_scale.isEmpty()){
@@ -89,6 +90,50 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
         holder.timeView.setText(transToDateFromTimeUtc(baseData.getTime()));
         holder.baseIdView.setText(baseData.getId());
+
+        if(baseData.getSign()!=null && !baseData.getSign().isEmpty()){
+            holder.signView.setText(baseData.getSign_scale());
+            //holder.signScaleView.setText(baseData.getSign_scale());
+            //holder.signScaleView.setVisibility(View.VISIBLE);
+        }else{
+            //holder.signScaleView.setVisibility(View.GONE);
+            holder.signView.setVisibility(View.GONE);
+        }
+
+        holder.signView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(holder.signView.getText().equals(baseData.getSign_scale())) {
+                    holder.signView.setText(baseData.getSign());
+                }else{
+                    holder.signView.setText(baseData.getSign_scale());
+
+                }
+            }
+        });
+
+        /*
+        holder.signScaleView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(holder.signScaleView.getVisibility() == View.VISIBLE) {
+                    holder.signScaleView.setVisibility(View.GONE);
+                    holder.signView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        */
+
+        //是否显示删除按纽
+        if(baseData.getUser().getId().equals(Login.user.getId())){
+            holder.deleteImageView.setVisibility(View.VISIBLE);
+            holder.deleteImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    transImageDataListener.deleteItem(position);
+                }
+            });
+        }
 
         //TODO: GridView
         if(baseData.getImageList() == null) {
@@ -125,6 +170,8 @@ public class BaseItemAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 }
             }
         });
+
+
 
     }
 

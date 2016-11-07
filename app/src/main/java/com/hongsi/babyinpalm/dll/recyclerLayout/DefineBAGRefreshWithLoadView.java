@@ -25,6 +25,10 @@ import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
 public class DefineBAGRefreshWithLoadView extends BGARefreshViewHolder {
     private boolean init = false;
 
+    public boolean isInit() {
+        return init;
+    }
+
     private TextView mHeaderStatusTv;
     private ImageView mHeaderArrowIv;
     private ImageView mHeaderChrysanthemumIv;

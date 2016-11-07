@@ -31,6 +31,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
 
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile files('libs/json.jar')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.2.1'
 

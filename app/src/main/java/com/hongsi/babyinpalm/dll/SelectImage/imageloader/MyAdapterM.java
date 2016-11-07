@@ -5,8 +5,10 @@ import android.graphics.Color;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.hongsi.babyinpalm.R;
+import com.hongsi.babyinpalm.Utils.ToastUtil;
 import com.hongsi.babyinpalm.dll.SelectImage.utils.CommonAdapter;
 
 import java.util.LinkedList;
@@ -78,6 +80,7 @@ public class MyAdapterM extends CommonAdapter<String>
 				{
 					//不能选择超过九张图片
 					if(mSelectedImage.size() == canSelectImage){
+						ToastUtil.showToast(mContext,R.string.no_more_9_img, Toast.LENGTH_SHORT);
 						return;
 					}
 

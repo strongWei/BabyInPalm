@@ -20,6 +20,8 @@ public class BaseData implements Serializable{
     private User user;
     private String urls;
     private String url_scales;
+    private String sign;
+    private String sign_scale;
 
     public String getContent() {
         return content;
@@ -76,5 +78,21 @@ public class BaseData implements Serializable{
 
     public void setUrls(String urls) {
         this.urls = urls;
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    public String getSign_scale() {
+        return sign_scale;
+    }
+
+    public void setSign_scale(String sign_scale) {
+        this.sign_scale = sign_scale;
     }
 }

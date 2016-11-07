@@ -27,4 +27,5 @@
     <color name="weixin_gray">#d1d1d1</color>
     <color name="weixin_black">#343434</color>
     <color name="weixin_text_gray">#aaaaaa</color>
+    <color name="sign_color">#475983</color>
 </resources>

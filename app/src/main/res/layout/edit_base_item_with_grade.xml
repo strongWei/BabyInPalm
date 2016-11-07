@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"
+    android:id="@+id/global_layout">
+
+   <com.hongsi.babyinpalm.Utils.Component.UsualHeaderLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/header">
+
+   </com.hongsi.babyinpalm.Utils.Component.UsualHeaderLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.hongsi.babyinpalm.dll.EditTextSelector.EditTextCountWithoutEmoji
+                android:id="@+id/edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp">
+
+            </com.hongsi.babyinpalm.dll.EditTextSelector.EditTextCountWithoutEmoji>
+
+            <com.hongsi.babyinpalm.dll.showImage.CustomGridView
+                android:id="@+id/imageGridView"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:stretchMode="columnWidth"
+                android:numColumns="4"
+                android:horizontalSpacing="5dp"
+                android:verticalSpacing="5dp"
+                android:visibility="visible"
+                android:listSelector="@android:color/transparent"
+                >
+            </com.hongsi.babyinpalm.dll.showImage.CustomGridView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/weixin_gray" />
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_weight="0"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="请选择班级："
+                    android:textSize="14dp"
+                    />
+
+
+
+                <com.hongsi.babyinpalm.dll.showImage.CustomGridView
+                    android:id="@+id/grade_list"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:stretchMode="columnWidth"
+                    android:numColumns="4"
+                    android:verticalSpacing="5dp"
+                    android:horizontalSpacing="5dp"
+                    android:visibility="visible"
+                    android:listSelector="@android:color/transparent">
+
+                </com.hongsi.babyinpalm.dll.showImage.CustomGridView>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

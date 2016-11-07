@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+
+    <TextView
+        android:id="@+id/id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/person_image"
+        android:layout_weight="0"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@mipmap/head"/>
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp">
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/name"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textColor="@color/black_200"
+            android:text="小学生"/>
+        <TextView
+            android:id="@+id/detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:textColor="@color/weixin_text_gray"
+            android:text="中一班"
+            android:lines="1"
+            />
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/call"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        android:background="@drawable/circle_button_green"
+        android:src="@mipmap/tea_connect"
+        android:scaleType="centerInside"
+        />
+
+
+    <ImageView
+        android:id="@+id/send_message"
+        android:layout_marginLeft="5dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        android:background="@drawable/circle_button_green"
+        android:src="@mipmap/sms"
+        android:scaleType="centerInside"
+        />
+</LinearLayout>

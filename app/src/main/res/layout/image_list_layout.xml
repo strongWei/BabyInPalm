@@ -15,22 +15,6 @@
         >
     </android.support.v7.widget.RecyclerView>
 
-    <TextView
-        android:id="@+id/textView"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-        android:layout_alignParentBottom="true"
-        android:text="1/8"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:textStyle="italic"/>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/imageList_recycler"
         android:layout_width="match_parent"
@@ -49,5 +33,21 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         />
+
+    <TextView
+        android:id="@+id/textView"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentBottom="true"
+        android:text="1/8"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="italic"/>
 
 </RelativeLayout>

@@ -13,12 +13,14 @@ import android.widget.Toast;
 
 import com.hongsi.babyinpalm.Exception.NetworkErrorException;
 import com.hongsi.babyinpalm.Exception.OtherIOException;
+import com.hongsi.babyinpalm.Interface.DialogListener;
 import com.hongsi.babyinpalm.Model.GetData;
 import com.hongsi.babyinpalm.Model.Login;
 import com.hongsi.babyinpalm.R;
 import com.hongsi.babyinpalm.Utils.BaseActivity;
 import com.hongsi.babyinpalm.Utils.Component.UsualHeaderLayout;
 import com.hongsi.babyinpalm.Utils.Component.WaitingDialog;
+import com.hongsi.babyinpalm.Utils.Component.WarningDialog;
 import com.hongsi.babyinpalm.Utils.HttpUtils;
 import com.hongsi.babyinpalm.Utils.ToastUtil;
 import com.hongsi.babyinpalm.dll.recyclerLayout.BaseData;
@@ -32,6 +34,7 @@ import com.hongsi.babyinpalm.dll.showImage.Interface.TransImageDataListener;
 import org.json.JSONException;
 
 import java.io.Serializable;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +58,7 @@ public class ActivityDataList extends BaseActivity implements BGARefreshLayout.B
 
     private BaseItemAdapter mAdapter = null;
 
-    private List<BaseData> mList = new ArrayList<BaseData>();
+    public List<BaseData> mList = new ArrayList<BaseData>();
 
     private int type = -1;
 
@@ -64,9 +67,13 @@ public class ActivityDataList extends BaseActivity implements BGARefreshLayout.B
 
     private WaitingDialog dialog = null;
 
+    private WarningDialog warningDialog = null;
+
     private UsualHeaderLayout headerLayout = null;
 
     private String url;   //要访问远程网络的链接
+
+    private boolean noMoreData = true;     //没有更多数据
 
     private Handler handler = new Handler(){
         @Override
@@ -92,24 +99,33 @@ public class ActivityDataList extends BaseActivity implements BGARefreshLayout.B
                     showMoreData();
                 }
                 break;
+
+                case 4:
+                    //没有更多数据
+                {
+                    mBGARefreshLayout.endLoadingMore();
+                }
+
             }
         }
     };
 
     private RefreshDataAsync refreshDataAsync = null;
     private ShowMoreDataAsync showMoreDataAsync = null;
+    private DeleteItemAsync deleteItemAsync = null;
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.back_u:{
                 onBackPressed();
-                finish();
+                //finish();
             }
             break;
 
             case R.id.edit_2_u:{
                 Intent intent = new Intent(ActivityDataList.this,ActivityAddData.class);
+                intent.putExtra("type",type);
                 startActivityForResult(intent,ADD);
             }
             break;
@@ -117,21 +133,22 @@ public class ActivityDataList extends BaseActivity implements BGARefreshLayout.B
     }
 
     /**  刷新查找最新数据线程 */
-    class RefreshDataAsync extends AsyncTask<String,Integer,Integer>{
+    static class RefreshDataAsync extends AsyncTask<Object,Integer,Integer>{
+        private WeakReference<ActivityDataList> weakReference;
 
-        private long time;
-
-        public RefreshDataAsync(long time){
-            this.time = time;
+        public RefreshDataAsync(ActivityDataList activityAddData){
+            weakReference = new WeakReference<ActivityDataList>(activityAddData);
         }
 
         @Override
-        protected Integer doInBackground(String... params) {
+        protected Integer doInBackground(Object... params) {
 
-            String url = params[0];
+            String url = (String) params[0];
+            long time = (long) params[1];
 
             try {
-                int code = GetData.getNewData(url,time,type);
+                int code = GetData.getNewData(url,time,weakReference.get().type
+                );
 
                 switch (code) {
                     case 0: {
@@ -141,7 +158,7 @@ public class ActivityDataList extends BaseActivity implements BGARefreshLayout.B
                         code = Login.login(Login.user.getPhone(), Login.user.getPassword());
                         switch (code) {
                             case 0: {
-                                code = GetData.getNewData(url, time, type);
+                                code = GetData.getNewData(url, time, weakReference.get().type);
                                 switch (code) {
                                     case 0:
                                         return SUCCESS;
@@ -190,43 +207,57 @@ public class ActivityDataList extends BaseActivity implements BGARefreshLayout.B
                 //dialog.dismiss();
                 //dialog.stopAnimate();
 
-                ToastUtil.showToast(ActivityDataList.this, i, Toast.LENGTH_SHORT);
+                ToastUtil.showToast(weakReference.get(), i, Toast.LENGTH_SHORT);
 
             }else{
 
-                if(GetData.dataList.size() == 0){
-//                    mDefineBAGRefreshWithLoadView.setPullDownRefreshText("没有动态数据");
-
-                }else{
-                    mList.addAll(0,GetData.dataList);
-                    mAdapter.notifyDataSetChanged();
+                if(weakReference.get()!=null){
+                    weakReference.get().noMoreData = true;
                 }
-
             }
 
-            mBGARefreshLayout.endRefreshing();
+
+            if(GetData.dataList.size() != 0) {
+                if(weakReference.get()!=null) {
+                    weakReference.get().mList.addAll(0, GetData.dataList);
+                    weakReference.get().mRecyclerView.setBackgroundResource(0);
+
+                    weakReference.get().mAdapter.notifyDataSetChanged();
+                }
+            }
+
+            if(weakReference.get().mList.size() == 0){
+                weakReference.get().mRecyclerView.setBackgroundResource(R.mipmap.none);
+            }
+
+            weakReference.get().mBGARefreshLayout.endRefreshing();
+
+            weakReference.get().mRecyclerView.scrollToPosition(0);
 
         }
     }
 
     /** 显示更多数据线程 */
-    class ShowMoreDataAsync extends AsyncTask<String,Integer,Integer>{
+    static class ShowMoreDataAsync extends AsyncTask<Object,Integer,Integer>{
 
-        private long time;
+        private WeakReference<ActivityDataList> weakReference;
         private boolean init;
+        private long time;
 
-        public ShowMoreDataAsync(long time, boolean mInit) {
+        public ShowMoreDataAsync(ActivityDataList activityDataList,boolean init) {
             super();
-            this.time = time;
-            this.init = mInit;
+            weakReference = new WeakReference<ActivityDataList>(activityDataList);
+            this.init = init;
         }
 
         @Override
-        protected Integer doInBackground(String... params) {
+        protected Integer doInBackground(Object... params) {
 
-            String url = params[0];
+            String url = (String) params[0];
+            time = (long) params[1];
+
             try {
-                int code = GetData.getOldData(url,time,type);
+                int code = GetData.getOldData(url,time,weakReference.get().type,init);
                 switch (code){
                     case 0:
                     {
@@ -236,7 +267,7 @@ public class ActivityDataList extends BaseActivity implements BGARefreshLayout.B
                         code = Login.login(Login.user.getPhone(),Login.user.getPassword());
                         switch (code){
                             case 0:{
-                                code = GetData.getOldData(url,time,type);
+                                code = GetData.getOldData(url,time,weakReference.get().type,init);
                                 switch (code){
                                     case 0:
                                         return SUCCESS;
@@ -264,11 +295,17 @@ public class ActivityDataList extends BaseActivity implements BGARefreshLayout.B
                 }
 
             } catch (OtherIOException e) {
+
+
                 return R.string.other_error;
             } catch (NetworkErrorException e){
+
+
                 return R.string.net_error;
             } catch (JSONException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+
+
                 return R.string.data_error;
             }
 
@@ -283,26 +320,52 @@ public class ActivityDataList extends BaseActivity implements BGARefreshLayout.B
                 //dialog.dismiss();
                 //dialog.stopAnimate();
 
-                ToastUtil.showToast(ActivityDataList.this, i, Toast.LENGTH_SHORT);
+                if(weakReference.get()!= null)
+                    GetData.getDataFromDb(weakReference.get().type,time);
 
-            }else{
-
-                //表明是初始化数据
-                mList.addAll(GetData.dataList);
-                mAdapter.notifyDataSetChanged();
+                ToastUtil.showToast(weakReference.get(), i, Toast.LENGTH_SHORT);
 
             }
 
             //dialog.dismiss();
             //dialog.stopAnimate();
             if(!init){
-                if(GetData.dataList.size() < 10){
-                    mBGARefreshLayout.endLoadingMore();
-                    mDefineBAGRefreshWithLoadView.updateLoadingMoreText("没有更多数据");
-                    mDefineBAGRefreshWithLoadView.hideLoadingMoreImg();
 
-                }else{
-                    mBGARefreshLayout.endLoadingMore();
+                if(GetData.dataList.size() < 10 && GetData.dataList.size() > 0){
+
+                    if(weakReference.get()!=null) {
+                        //没有更多数据显示，则向下显示更多不再去服务器请求
+                        weakReference.get().noMoreData = false;
+
+                        weakReference.get().mDefineBAGRefreshWithLoadView.updateLoadingMoreText("没有更多数据");
+                        weakReference.get().mDefineBAGRefreshWithLoadView.hideLoadingMoreImg();
+
+                        weakReference.get().mList.addAll(GetData.dataList);
+
+                        weakReference.get().mAdapter.notifyDataSetChanged();
+
+                        //weakReference.get().noMoreData = true;
+
+                        weakReference.get().mBGARefreshLayout.endLoadingMore();
+                    }
+
+                }else if(GetData.dataList.size() == 0){
+                    //没有更多数据显示，则向下显示更多不再去服务器请求
+                    weakReference.get().noMoreData = false;
+
+                    //weakReference.get().noMoreData = true;
+                    weakReference.get().mDefineBAGRefreshWithLoadView.updateLoadingMoreText("没有更多数据");
+                    weakReference.get().mDefineBAGRefreshWithLoadView.hideLoadingMoreImg();
+                    weakReference.get().mBGARefreshLayout.endLoadingMore();
+                }
+                else {
+
+                    if(weakReference.get()!=null) {
+                        weakReference.get().mBGARefreshLayout.endLoadingMore();
+
+                        weakReference.get().mList.addAll(GetData.dataList);
+                        weakReference.get().mAdapter.notifyDataSetChanged();
+                    }
                 }
 
             }else{
@@ -315,9 +378,141 @@ public class ActivityDataList extends BaseActivity implements BGARefreshLayout.B
 //                    mDefineBAGRefreshWithLoadView.setPullDownRefreshText("加载完成");
 //                }
 
-                mDefineBAGRefreshWithLoadView.setInit(false);
-                mDefineBAGRefreshWithLoadView.setPullDownRefreshText("下拉刷新");
+
+//                mDefineBAGRefreshWithLoadView.setPullDownRefreshText("下拉刷新");
+
+                if(GetData.dataList.size() == 0){
+
+                    if(weakReference.get()!=null) {
+
+                        //没有更多数据显示，则向下显示更多不再去服务器请求
+                        weakReference.get().noMoreData = false;
+
+                        weakReference.get().mRecyclerView.setBackgroundResource(R.mipmap.none);
+
+                        weakReference.get().mDefineBAGRefreshWithLoadView.updateLoadingMoreText("没有更多数据");
+                        weakReference.get().mDefineBAGRefreshWithLoadView.hideLoadingMoreImg();
+                        //weakReference.get().mAdapter.notifyDataSetChanged();
+                    }
+
+                }else if(GetData.dataList.size() < 10){
+
+                    if(weakReference.get()!=null) {
+                        //没有更多数据显示，则向下显示更多不再去服务器请求
+                        weakReference.get().noMoreData = false;
+
+                        weakReference.get().mRecyclerView.setBackgroundResource(0);
+
+                        weakReference.get().mDefineBAGRefreshWithLoadView.updateLoadingMoreText("没有更多数据");
+                        weakReference.get().mDefineBAGRefreshWithLoadView.hideLoadingMoreImg();
+                        weakReference.get().mList.addAll(GetData.dataList);
+                        weakReference.get().mAdapter.notifyDataSetChanged();
+                    }
+
+                }else{
+                    if(weakReference.get()!=null) {
+                        weakReference.get().mRecyclerView.setBackgroundResource(0);
+                        weakReference.get().mList.addAll(GetData.dataList);
+                    }
+                }
+
+                if(weakReference.get()!=null) {
+                    weakReference.get().mDefineBAGRefreshWithLoadView.setInit(false);
+                    weakReference.get().mBGARefreshLayout.endRefreshing();
+                }
             }
+
+        }
+    }
+
+    /*** 删除某一个项 的线程*/
+    static class DeleteItemAsync extends AsyncTask<Object,Integer,Integer>{
+
+        private WeakReference<ActivityDataList> weakReference;
+
+        private int position;
+
+        public DeleteItemAsync(ActivityDataList activityDataList,int position){
+            weakReference = new WeakReference<ActivityDataList>(activityDataList);
+            this.position = position;
+        }
+
+        @Override
+        protected Integer doInBackground(Object... params) {
+            String url = (String) params[0];
+            String itemId = (String) params[1];
+
+            try {
+                int code = GetData.deleteData(url,itemId,weakReference.get().type);
+
+                switch (code) {
+                    case 0: {
+                        return SUCCESS;
+                    }
+                    case -1: {
+                        code = Login.login(Login.user.getPhone(), Login.user.getPassword());
+                        switch (code) {
+                            case 0: {
+                                code = GetData.deleteData(url,itemId,weakReference.get().type);
+                                switch (code) {
+                                    case 0:
+                                        return SUCCESS;
+                                    case -1:
+                                        return R.string.account_exception;
+                                    case -2:
+                                        return R.string.server_error;
+                                }
+                            }
+                            case -1: {
+                                return R.string.login_error;
+                            }
+
+                            case -2: {
+                                return R.string.server_error;
+                            }
+                        }
+                    }
+                    case -2: {
+                        return R.string.server_error;
+                    }
+                }
+            } catch (OtherIOException e) {
+                return R.string.other_error;
+            } catch (NetworkErrorException e) {
+                return R.string.net_error;
+            } catch (JSONException e) {
+                return R.string.data_error;
+            }
+
+            return 0;
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            int i = integer.intValue();
+
+            if(i!=SUCCESS) {
+                //dialog.dismiss();
+                //dialog.stopAnimate();
+
+                ToastUtil.showToast(weakReference.get(), i, Toast.LENGTH_SHORT);
+
+            }else{
+
+                //表明是初始化数据
+                weakReference.get().mList.remove(position);
+                weakReference.get().mAdapter.notifyDataSetChanged();
+
+                if(weakReference.get().mList.size() == 0){
+                    weakReference.get().mRecyclerView.setBackgroundResource(R.mipmap.none);
+                }
+
+            }
+            weakReference.get().dialog.dismiss();
+            weakReference.get().dialog.stopAnimate();
+
+            weakReference.clear();
+            weakReference = null;
         }
     }
 
@@ -349,8 +544,8 @@ public class ActivityDataList extends BaseActivity implements BGARefreshLayout.B
     //第一次进入时初始化数据
     private void initData() {
         showMoreDataAsync = null;
-        showMoreDataAsync = new ShowMoreDataAsync(System.currentTimeMillis(),true);
-        showMoreDataAsync.execute(url);
+        showMoreDataAsync = new ShowMoreDataAsync(this,true);
+        showMoreDataAsync.execute(url,System.currentTimeMillis());
     }
 
     //刷新时获取最新数据
@@ -358,21 +553,23 @@ public class ActivityDataList extends BaseActivity implements BGARefreshLayout.B
         //不需要检查本地缓存，直接获取最新数据
         if(mList.isEmpty()){
             //表明上次初始化时没有获取到任何数据
-            refreshDataAsync = null;
-            refreshDataAsync = new RefreshDataAsync(System.currentTimeMillis());
-            refreshDataAsync.execute(url);
+            showMoreDataAsync = null;
+            showMoreDataAsync = new ShowMoreDataAsync(this,true);
+            showMoreDataAsync.execute(url,System.currentTimeMillis());
         }else{
             //获取最新的时间
             refreshDataAsync = null;
-            refreshDataAsync = new RefreshDataAsync(mList.get(0).getTime());
-            refreshDataAsync.execute(url);
+            refreshDataAsync = new RefreshDataAsync(this);
+            refreshDataAsync.execute(url,mList.get(0).getTime());
         }
     }
 
     //显示更多数据
     private void showMoreData(){
         //需要检查本地缓存，但已经由后台完成
-        new ShowMoreDataAsync(mList.get(mList.size()-1).getTime(),false).execute(url);
+        showMoreDataAsync = null;
+        showMoreDataAsync = new ShowMoreDataAsync(this,false);
+        showMoreDataAsync.execute(url,mList.get(mList.size()-1).getTime());
     }
 
     //动态生成网络链接
@@ -384,6 +581,47 @@ public class ActivityDataList extends BaseActivity implements BGARefreshLayout.B
                 StringBuffer buffer = new StringBuffer();
                 buffer.append(HttpUtils.BASE_URL);
                 buffer.append("/app/notice");
+                url = buffer.toString();
+            }
+            break;
+
+            case 1:
+            {
+                //饮食
+                StringBuffer buffer = new StringBuffer();
+                buffer.append(HttpUtils.BASE_URL);
+                buffer.append("/app/eat");
+                url = buffer.toString();
+
+            }
+            break;
+
+            case 2:
+            {
+                //课堂计划
+                StringBuffer buffer = new StringBuffer();
+                buffer.append(HttpUtils.BASE_URL);
+                buffer.append("/app/class_list");
+                url = buffer.toString();
+            }
+            break;
+
+            case 3:
+            {
+                //宝宝动态
+                StringBuffer buffer = new StringBuffer();
+                buffer.append(HttpUtils.BASE_URL);
+                buffer.append("/app/baby_dynamic");
+                url = buffer.toString();
+            }
+            break;
+
+            case 4:
+            {
+                //留言版
+                StringBuffer buffer = new StringBuffer();
+                buffer.append(HttpUtils.BASE_URL);
+                buffer.append("/app/message_board");
                 url = buffer.toString();
             }
             break;
@@ -418,17 +656,48 @@ public class ActivityDataList extends BaseActivity implements BGARefreshLayout.B
     private void initView() {
 
         headerLayout = (UsualHeaderLayout) findViewById(R.id.header);
-        switch (type){
-            case 0:
-                headerLayout.setEdit2Text(R.string.notice);
-                break;
-        }
 
         headerLayout.setEdit2Text("添加");
 
         headerLayout.getBackView().setOnClickListener(this);
         //headerLayout.getEditView().setOnClickListener(this);
         headerLayout.getEdit2View().setOnClickListener(this);
+
+        switch (type){
+            case 0: {
+                headerLayout.setTitle(R.string.notice);
+                if(Login.user.getRole().equals("家长")){
+                    //不显示添加按纽
+                    headerLayout.getEdit2View().setVisibility(View.GONE);
+                }
+            }
+                break;
+            case 1: {
+                headerLayout.setTitle(R.string.eat);
+                if (Login.user.getRole().equals("家长")) {
+                    //不显示添加按纽
+                    headerLayout.getEdit2View().setVisibility(View.GONE);
+                }
+            }
+                break;
+            case 2: {
+                headerLayout.setTitle(R.string.class_record);
+                if (Login.user.getRole().equals("家长")) {
+                    //不显示添加按纽
+                    headerLayout.getEdit2View().setVisibility(View.GONE);
+                }
+            }
+                break;
+            case 3:
+                headerLayout.setTitle(R.string.baby_dynamic);
+                break;
+
+            case 4:
+                headerLayout.setTitle(R.string.message_board);
+                break;
+        }
+
+
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -447,6 +716,46 @@ public class ActivityDataList extends BaseActivity implements BGARefreshLayout.B
                 intent.putExtras(bundle);
 
                 startActivity(intent);
+            }
+
+            @Override
+            public void deleteItem(final int position) {
+
+                if(warningDialog == null){
+                    warningDialog = new WarningDialog(ActivityDataList.this, R.style.DialogStyle, new DialogListener() {
+                        @Override
+                        public void getResultBoolean(boolean b) {
+                            if(b){
+                                //删除
+                                warningDialog.dismiss();
+
+                                //删除某一个项
+                                if(deleteItemAsync != null){
+                                    deleteItemAsync.cancel(true);
+                                    deleteItemAsync = null;
+                                }
+
+                                if(dialog == null){
+                                    dialog = new WaitingDialog(ActivityDataList.this,R.style.DialogStyle);
+                                }
+
+                                dialog.setText(R.string.waiting);
+                                dialog.show();
+                                dialog.startAnimate();
+
+                                deleteItemAsync = new DeleteItemAsync(ActivityDataList.this,position);
+                                deleteItemAsync.execute(url,mList.get(position).getId());
+
+                            }else{
+                                warningDialog.dismiss();
+                            }
+                        }
+                    });
+                }
+
+                warningDialog.setWarnText(R.string.delete_or_no);
+                warningDialog.show();
+
             }
         });
         mRecyclerView.setAdapter(mAdapter);
@@ -474,19 +783,42 @@ public class ActivityDataList extends BaseActivity implements BGARefreshLayout.B
             refreshDataAsync.cancel(true);
         }
 
-        mRecyclerView = null;
-        mList.clear();
-        mList = null;
-        mAdapter = null;
+        if(warningDialog != null && warningDialog.isShowing()){
+            warningDialog.dismiss();
+            warningDialog = null;
+        }
+
+        if(dialog != null && dialog.isShowing()){
+            dialog.dismiss();
+            dialog.stopAnimate();
+            dialog = null;
+        }
+
+        //mRecyclerView = null;
+        //mList.clear();
+        //mList = null;
+        //mAdapter = null;
     }
 
     @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-        handler.sendEmptyMessageDelayed(1,1000);
+        if(!mDefineBAGRefreshWithLoadView.isInit())
+             handler.sendEmptyMessageDelayed(1,1000);
     }
 
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+
+
+        if(!noMoreData){
+            //mDefineBAGRefreshWithLoadView.updateLoadingMoreText("没有更多数据");
+           // mDefineBAGRefreshWithLoadView.hideLoadingMoreImg();
+            //mBGARefreshLayout.endLoadingMore();
+            handler.sendEmptyMessageDelayed(4,1000);
+
+            return true;
+        }
+
         handler.sendEmptyMessageDelayed(2,1000);
         return true;
     }

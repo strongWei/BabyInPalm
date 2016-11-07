@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">掌上宝宝</string>
 
+    <!--screen activity-->
+    <string name="network_unavaibaled">网络不可用</string>
+
     <!-- quit app -->
     <string name="backpress_quit_text">再按一次退出程序</string>
 
@@ -105,15 +108,25 @@
     <string name="upload_success">上传图片成功!</string>
     <string name="imaging">图片处理中</string>
 
+    <!-- 联系方式 -->
+    <string name="getting">获取数据中</string>
+    <string name="tea_connect">教师联系</string>
+    <string name="par_connect">家长联系</string>
+    <string name="message_board">留言版</string>
 
 
     <!-- 获取数据 通用 activity-->
     <string name="time_no_set">未设置时间</string>
+    <string name="delete_or_no">确定要删除吗？</string>
 
     <!-- 添加数据 通用 activity -->
     <string name="add_notice">添加公告栏</string>
+    <string name = "loading">加载图片中</string>
+    <string name="publish">发布</string>
+    <string name="initing">初始化中</string>
 
     <!-- 选择图片 -->
     <string name="select_image">选择图片</string>
+    <string name="no_more_9_img">最多只能选择9张图片！</string>
 
 </resources>

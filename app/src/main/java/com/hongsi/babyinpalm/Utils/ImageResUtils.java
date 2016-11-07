@@ -131,12 +131,12 @@ public class ImageResUtils {
     }
 
     /**
-     * 根据 路径 获取 bitmap
+     * 根据 路径 获取 bitmap 自动缩放
      * @param url
      * @return
      * @throws FileNotFoundException
      */
-    public static Bitmap getImageByUrl(String url) throws FileNotFoundException {
+    public static Bitmap getImageByUrl(String url,int maxWidth,int maxHeight) throws FileNotFoundException {
 
         Bitmap bitmap = null;
 
@@ -144,6 +144,50 @@ public class ImageResUtils {
         InputStream is = new FileInputStream(url);
         //2.为位图设置100K的缓存
         BitmapFactory.Options opts=new BitmapFactory.Options();
+
+        opts.inJustDecodeBounds = true;
+        bitmap = BitmapFactory.decodeFile(url,opts);
+
+        //获取图片的真实大小
+        float realWidth = opts.outWidth;
+        float realHeight = opts.outHeight;
+
+        //计算缩放比
+        float be = 1;
+
+        //获取宽度/高度的缩放比
+        float widthDegree = realWidth / maxWidth;
+        float heightDegree = realHeight / maxHeight;
+
+        if (widthDegree < 0 && heightDegree < 0) {
+            //真实图片（宽高）比要求图片小, 不缩放
+            be = 1;
+        } else if (widthDegree < 0 && heightDegree >= 0) {
+            //真实图片（宽）比要求图片小，真实图片高比要求图片大
+            be = heightDegree;
+        } else if (widthDegree > 0 && heightDegree <= 0) {
+            //真实图片（宽）比要求图片大，真实图片高比要求图片小
+            be = widthDegree;
+        } else if (widthDegree > 0 && heightDegree > 0) {
+            if(realWidth < realHeight) {
+                be = heightDegree;
+            }else{
+                be = widthDegree;
+            }
+
+        } else if (widthDegree == 0 && heightDegree < 0) {
+            //真实图片高比要求图片小
+            be = widthDegree;
+        } else if (widthDegree == 0 && heightDegree >= 0) {
+            be = heightDegree;
+        }
+
+
+        if(be<=0){
+            be = 1;
+        }
+
+
         opts.inTempStorage = new byte[100 * 1024];
         //3.设置位图颜色显示优化方式
         //ALPHA_8：每个像素占用1byte内存（8位）
@@ -156,9 +200,10 @@ public class ImageResUtils {
         opts.inPurgeable = true;
         //5.设置位图缩放比例
         //width，hight设为原来的四分一（该参数请使用2的整数倍）,这也减小了位图占用的内存大小；例如，一张//分辨率为2048*1536px的图像使用inSampleSize值为4的设置来解码，产生的Bitmap大小约为//512*384px。相较于完整图片占用12M的内存，这种方式只需0.75M内存(假设Bitmap配置为//ARGB_8888)。
-        opts.inSampleSize = 2;
+        opts.inSampleSize = (int)be;
         //6.设置解码位图的尺寸信息
         opts.inInputShareable = true;
+        opts.inJustDecodeBounds = false;
         //7.解码位图
         bitmap =BitmapFactory.decodeStream(is,null, opts);
 
@@ -310,7 +355,9 @@ public class ImageResUtils {
         }
 
         //采样率
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
         options.inSampleSize = (int) be;
+        LogUtil.e(TAG,be +"");
 
         options.inPurgeable = true;
         options.inInputShareable = true;
@@ -357,6 +404,11 @@ public class ImageResUtils {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            if(rotateBitmap!=null){
+                rotateBitmap.recycle();
+                rotateBitmap = null;
+            }
         }
 
         return file;
@@ -415,6 +467,7 @@ public class ImageResUtils {
      * @param oldPath  保存到旧的路径
      * @return 新的路径或空
      */
+    /*
     public static String rotateImageAutoAndSave(String oldPath,String newPath){
 
         int degree = getBitmapDegree(oldPath);
@@ -444,4 +497,5 @@ public class ImageResUtils {
 
         return newPath;
     }
+    */
 }

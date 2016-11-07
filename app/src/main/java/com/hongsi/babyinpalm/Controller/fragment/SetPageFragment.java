@@ -26,7 +26,6 @@ import com.hongsi.babyinpalm.Model.Logout;
 import com.hongsi.babyinpalm.R;
 import com.hongsi.babyinpalm.Utils.Component.CustomApplication;
 import com.hongsi.babyinpalm.Utils.Component.WaitingDialog;
-import com.hongsi.babyinpalm.Utils.HttpUtilsWithSession;
 import com.hongsi.babyinpalm.Utils.ToastUtil;
 
 import org.json.JSONException;
@@ -53,7 +52,6 @@ public class SetPageFragment extends Fragment implements View.OnClickListener {
                     dialog.stopAnimate();
                     dialog.dismiss();
 
-                    HttpUtilsWithSession.clearSession();
 
                     //注销
                     Activity act = getActivity();

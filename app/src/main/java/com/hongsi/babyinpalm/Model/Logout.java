@@ -1,12 +1,14 @@
 package com.hongsi.babyinpalm.Model;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import com.hongsi.babyinpalm.Exception.NetworkErrorException;
 import com.hongsi.babyinpalm.Exception.OtherIOException;
+import com.hongsi.babyinpalm.Utils.Component.CustomApplication;
 import com.hongsi.babyinpalm.Utils.HttpUtils;
 import com.hongsi.babyinpalm.Utils.HttpUtilsWithSession;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by Administrator on 2016/10/12 0012.
@@ -26,7 +28,22 @@ public class Logout {
 
         String result = HttpUtilsWithSession.post(bufferUrl.toString(),buffer.toString());
 
-        return HttpUtilsWithSession.parseJson(result);
+        int code = HttpUtilsWithSession.parseJson(result);
+        if(code ==0){
+            clearUser();
+        }
+
+        return code;
+    }
+
+    private static void clearUser() {
+        HttpUtilsWithSession.clearSession();
+        SQLiteDatabase db = CustomApplication.getDbHelper().getWritableDatabase();
+        String sql = "delete from user";
+        db.execSQL(sql);
+        db.close();
+
+        Login.clearUser();
     }
 
 }

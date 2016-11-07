@@ -58,6 +58,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="5dp">
             <LinearLayout
+                android:id="@+id/message_bord"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:orientation="horizontal"
@@ -86,7 +87,7 @@
                         android:layout_centerVertical="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="消息通知"
+                        android:text="@string/message_board"
                         android:layout_gravity="center"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -99,7 +100,9 @@
                 </RelativeLayout>
 
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/tea_connect"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:orientation="horizontal"
@@ -128,7 +131,7 @@
                         android:layout_centerVertical="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="教师联系"
+                        android:text="@string/tea_connect"
                         android:layout_gravity="center"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -141,7 +144,9 @@
                 </RelativeLayout>
 
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/par_connect"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:orientation="horizontal"
@@ -170,7 +175,7 @@
                         android:layout_centerVertical="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="家长联系"
+                        android:text="@string/par_connect"
                         android:layout_gravity="center"
                         android:textSize="16sp"
                         android:textStyle="bold"

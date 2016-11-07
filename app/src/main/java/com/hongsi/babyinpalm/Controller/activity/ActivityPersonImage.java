@@ -2,6 +2,7 @@ package com.hongsi.babyinpalm.Controller.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -9,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.hongsi.babyinpalm.Domain.ImageData;
 import com.hongsi.babyinpalm.R;
@@ -17,10 +19,15 @@ import com.hongsi.babyinpalm.Utils.Component.BottomPopView;
 import com.hongsi.babyinpalm.Utils.Component.CustomApplication;
 import com.hongsi.babyinpalm.Utils.Component.UsualHeaderLayout;
 import com.hongsi.babyinpalm.Utils.ImageResUtils;
+import com.hongsi.babyinpalm.Utils.ToastUtil;
 import com.hongsi.babyinpalm.dll.clipImage.ClipImageActivity;
 import com.hongsi.babyinpalm.dll.SelectImage.imageloader.SingleSelectImageActivity;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -44,6 +51,7 @@ public class ActivityPersonImage extends BaseActivity implements View.OnClickLis
     private String clipImagePath = "";          //被剪切后的图片路径
     private String imageUrl = "";           //旧大图的图片路径
     private RelativeLayout imageLayout = null;      //进行左右切换的区域
+    private String cameraImagePath;             //拍照时的图片
 
     private float cursorLastX = 0;
     private float cursorFirstX = 0;
@@ -229,7 +237,11 @@ public class ActivityPersonImage extends BaseActivity implements View.OnClickLis
                     public void onTopButtonClick() {
                         //拍照
                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        //intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(ClipImageActivity.getTempImageBig()));
+                        File file = new File(CustomApplication.getImageDir(),System.currentTimeMillis() + ".jpg");
+
+                        cameraImagePath = file.getAbsolutePath();
+
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
                         startActivityForResult(intent, CAMERA);
                         dismiss();
                     }
@@ -293,12 +305,57 @@ public class ActivityPersonImage extends BaseActivity implements View.OnClickLis
                 break;
             case CAMERA:
                 // 照相机程序返回的,再次调用图片剪辑程序去修剪图片
-                if(data != null) {
-                    Uri uri = data.getData();
-                    startCropImageActivity(ImageResUtils.getRealFilePath(this,uri));
+                String url;
+
+                if(cameraImagePath== null || cameraImagePath.isEmpty()){
+                    Bundle bundle = data.getExtras();
+                    Bitmap bitmap = (Bitmap) bundle.get("data");
+                    //LogUtil.e("count", bitmap.getByteCount() +"");
+                    url = ImageResUtils.getRealFilePath(this,Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, null,null)));
+                }else{
+                    url = cameraImagePath;
                 }
+
+                String path = copyToTempDir(url);
+
+                if(path == null){
+                    return;
+                }
+
+                startCropImageActivity(path);
                 break;
         }
+    }
+
+    private String copyToTempDir(String url) {
+        File inFile = new File(url);
+
+        if(!inFile.exists()){
+            ToastUtil.showToast(this,"文件不存在！", Toast.LENGTH_SHORT);
+            return null;
+        }
+
+
+        try {
+            FileInputStream in = new FileInputStream(inFile);
+            FileOutputStream out = new FileOutputStream(ClipImageActivity.getTempImageBig());
+
+            byte[] bytes = new byte[1024];
+            int num = 0;
+            while((num = in.read(bytes)) != -1){
+                out.write(bytes,0,num);
+            }
+
+            in.close();
+            out.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return ClipImageActivity.getTempImageBig().getAbsolutePath();
     }
 
     /**

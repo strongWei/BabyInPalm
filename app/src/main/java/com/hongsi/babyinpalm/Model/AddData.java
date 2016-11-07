@@ -15,9 +15,10 @@ import java.util.List;
 
 public class AddData {
 
-    public static int add(String content,String url,int type,List<File> files) throws OtherIOException, NetworkErrorException, JSONException {
+    public static int add(String content,String url,int type,List<File> files,String gradeLists) throws OtherIOException, NetworkErrorException, JSONException {
         String result = "";
-        result = HttpUtilsWithSession.postFiles(url,content, files);
+
+        result = HttpUtilsWithSession.postFiles(url, content, files,gradeLists);
 
         int code = HttpUtilsWithSession.parseJson(result);
 

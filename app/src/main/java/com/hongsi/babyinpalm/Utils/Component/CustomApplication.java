@@ -2,14 +2,19 @@ package com.hongsi.babyinpalm.Utils.Component;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Environment;
 import android.webkit.WebView;
 
-import com.hongsi.babyinpalm.R;
 import com.hongsi.babyinpalm.Utils.AppDbSqliteHelper;
 import com.hongsi.babyinpalm.Utils.ImageLoader;
 import com.hongsi.babyinpalm.Utils.LogUtil;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -92,5 +97,45 @@ public class CustomApplication extends Application{
     /** 获取数据库 */
     public static AppDbSqliteHelper getDbHelper(){
         return dbHelper;
+    }
+
+    /** 获取网络类型*/
+    public static boolean hasNetwork(){
+        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+
+        if(networkInfo == null || !networkInfo.isConnected()){
+            return false;
+        }
+
+        return true;
+    }
+
+    /** 获取本地的图片默认存储文件夹 */
+    public static String getImageDir(){
+
+        File fileDir = new File(Environment.getExternalStorageDirectory().getAbsoluteFile(),"BabyInPalm");
+
+        if(!fileDir.exists()){
+            fileDir.mkdirs();
+
+            //这个时候随机创建一个文件,创造一个假象
+            File tempFile = new File(fileDir,"1.jpg");
+
+            try {
+                tempFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(tempFile)));
+
+            //之后再把文件删除
+            tempFile.delete();
+
+        }
+
+
+        return fileDir.getAbsolutePath();
     }
 }

@@ -64,6 +64,8 @@ public class ActivityImageList extends BaseActivity implements View.OnClickListe
 
     private boolean delete = true;
 
+    private int cursor_size;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +79,9 @@ public class ActivityImageList extends BaseActivity implements View.OnClickListe
             delete = intent.getBooleanExtra("delete",true);
             mImageList = (List<ImageData>) intent.getSerializableExtra("imageList");
         }
+
+        //WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+        cursor_size = 25;
 
         initView();
     }
@@ -113,9 +118,10 @@ public class ActivityImageList extends BaseActivity implements View.OnClickListe
                     case MotionEvent.ACTION_UP:
                         if(cursorFirstX - cursorLastX < 0 ){
                             //向左转
-                            if(Math.abs(cursorFirstX - cursorLastX) > 25){
+                            if(Math.abs(cursorFirstX - cursorLastX) > cursor_size){
+                                recyclerView.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_CANCEL, 0, 0, 0));
                                 if(position - 1 >= 0){
-                                    recyclerView.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_CANCEL, 0, 0, 0));
+                                    //recyclerView.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_CANCEL, 0, 0, 0));
                                     layoutManager.scrollToPosition(--position);
                                     int tempPosition = position + 1;
                                     textView.setText(tempPosition + "/" + mImageList.size());
@@ -128,7 +134,7 @@ public class ActivityImageList extends BaseActivity implements View.OnClickListe
                             }
                         }else if(cursorFirstX - cursorLastX > 0 ){
 
-                            if(Math.abs(cursorFirstX - cursorLastX) > 25){
+                            if(Math.abs(cursorFirstX - cursorLastX) > cursor_size){
                                 recyclerView.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_CANCEL, 0, 0, 0));
                                 //向右转
                                 if(position + 1 < mImageList.size()) {
@@ -338,7 +344,7 @@ public class ActivityImageList extends BaseActivity implements View.OnClickListe
                     //说明是本地的数据
                     try {
                         holder.imageView.refreshDrawableState();
-                        holder.imageView.setImageBitmap(ImageResUtils.rotateBitmapByDegree(ImageResUtils.getImageByUrl(url),
+                        holder.imageView.setImageBitmap(ImageResUtils.rotateBitmapByDegree(ImageResUtils.getImageByUrl(url,640,480),
                                 ImageResUtils.getBitmapDegree(url)));
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
